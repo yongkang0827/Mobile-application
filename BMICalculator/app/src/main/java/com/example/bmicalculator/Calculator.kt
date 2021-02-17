@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class Calculator : AppCompatActivity() {
-    var bmiIndex: Double = 0.0
+    private var bmiIndex: Double = 0.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,13 +30,13 @@ class Calculator : AppCompatActivity() {
 
         btn.setOnClickListener() {
 
-            val height = findViewById<EditText>(R.id.editTextWeight).text.toString()
-            val weight = findViewById<EditText>(R.id.editTextWeight).text.toString()
+            val height = findViewById<EditText>(R.id.editTextHeight).text.toString().toDouble()
+            val weight = findViewById<EditText>(R.id.editTextWeight).text.toString().toDouble()
             val tvStatus = findViewById<TextView>(R.id.textResult)
 
-            bmiIndex = weight.toDouble() / (height.toDouble() * height.toDouble())
+            bmiIndex = weight / (height * height)
 
-            tvStatus.setText(getStatus())
+            tvStatus.text=getStatus()
         }
 
     }
@@ -48,19 +48,24 @@ class Calculator : AppCompatActivity() {
     }
 
     private fun getStatus(): String {
-        if (bmiIndex < 18.5) {
-            return "underweight"
-        } else if (bmiIndex>18.5 && bmiIndex < 24.9) {
-            return "Normal weight"
-        } else if (bmiIndex>24.9 && bmiIndex < 29.9) {
-            return "Overweight"
-        } else if (bmiIndex>29.9 && bmiIndex < 34.9) {
-            return "Obesity class I"
-        } else if (bmiIndex>34.9 && bmiIndex < 39.9) {
-            return "Obesity class II"
+        when {
+            bmiIndex < 18.5 -> {
+                return "underweight"
+            }
+            bmiIndex in 18.5..24.9 -> {
+                return "Normal weight"
+            }
+            bmiIndex in 24.9..29.9 -> {
+                return "Overweight"
+            }
+            bmiIndex in 29.9..34.9 -> {
+                return "Obesity class I"
+            }
+            bmiIndex in 34.9..39.9 -> {
+                return "Obesity class II"
+            }
+            else -> return " Obesity class III"
         }
-
-        return " Obesity class III"
 
     }
 }
